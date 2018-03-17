@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>runningUser__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The context/running user of the class responsible for this DebugEntry</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Who dun it?</inlineHelpText>
+    <label>Running User</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>DebugEntries</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

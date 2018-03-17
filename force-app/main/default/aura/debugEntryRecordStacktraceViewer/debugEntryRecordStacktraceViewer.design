@@ -1,0 +1,5 @@
+<design:component label="Stacktrace Viewer">
+	<sfdc:objects >
+        <sfdc:object >DebugEntry__c</sfdc:object>
+    </sfdc:objects>
+</design:component>

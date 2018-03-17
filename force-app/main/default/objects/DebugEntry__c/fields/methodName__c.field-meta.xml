@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>methodName__c</fullName>
+    <description>The method in context when this debug entry was created</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Method from which this entry was created</inlineHelpText>
+    <label>methodName</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

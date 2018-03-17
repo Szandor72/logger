@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DebugEntryCompactLayout</fullName>
+    <fields>displayHeader__c</fields>
+    <fields>runningUser__c</fields>
+    <fields>className__c</fields>
+    <fields>methodName__c</fields>
+    <fields>cpuTimeUsage__c</fields>
+    <label>Debug Entry Compact Layout</label>
+</CompactLayout>

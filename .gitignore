@@ -1,0 +1,8 @@
+.sfdx/
+.vscode/
+src/
+uncrustify.cfg
+app.app
+app.app-meta.xml
+uncrustify.cfg
+force-app/main/default/settings/Security.settings-meta.xml

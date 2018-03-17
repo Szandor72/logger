@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SandoxInstallURL__c</fullName>
+    <description>Sandbox Installation Link generated from PackageId</description>
+    <externalId>false</externalId>
+    <formula>HYPERLINK('https://test.salesforce.com/packaging/installPackage.apexp?p0='+packageId__c,'https://test.salesforce.com/packaging/installPackage.apexp?p0='+packageId__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Sandbox Installation Link</inlineHelpText>
+    <label>Sandbox Installation</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

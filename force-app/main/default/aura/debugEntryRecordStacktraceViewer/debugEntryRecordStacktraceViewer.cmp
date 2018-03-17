@@ -1,0 +1,32 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+
+	<aura:attribute name="entryRecord" 
+									type="Object" 
+									description="Only used to store Log Entries JSON" />
+	<aura:attribute name="debugEntry" 
+									type="Object"
+									description="necessary for Dataservice" />
+	<aura:attribute name="entryRecordError" 
+									type="String" description="Error messages from data service" />
+	<aura:attribute name="items" 
+									type="Object" 
+									description="Dummy, remote" />
+
+
+	<aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+
+	<force:recordData aura:id="jsonLoader" 
+										recordId="{!v.recordId}" 
+										targetRecord="{!v.entryRecord}" 
+										targetFields="{!v.debugEntry}"
+										 fields="['Name','logEntryJSON__c']" 
+										 targetError="{!v.entryRecordError}" 
+										 recordUpdated="{!c.onInit}" />
+	<lightning:card >
+	<p>{!v.entryRecordError} </p>
+	
+	<div style="padding:18px">
+		<lightning:tree items="{! v.items }" header="StackTrace View. Messages expanded" />
+	</div>
+    </lightning:card>    
+</aura:component>

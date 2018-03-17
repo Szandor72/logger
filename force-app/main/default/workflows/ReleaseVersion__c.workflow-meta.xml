@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>releaseVersionOnCreateNameUpdate</fullName>
+        <description>Update Name to Major.Minor Number</description>
+        <field>Name</field>
+        <formula>If(!isblank(packageName__c),packageName__c+' Version ','')+
+Text(majorVersionNumber__c)+'.'+Text(minorVersionNumber__c)+IF(isBetaPackage__c,' Beta','')</formula>
+        <name>releaseVersionOnCreateNameUpdate</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>releaseVersionSetBetaPackage</fullName>
+        <description>set isBetaPackage__c to true</description>
+        <field>isBetaPackage__c</field>
+        <literalValue>1</literalValue>
+        <name>releaseVersionSetBetaPackage</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <rules>
+        <fullName>releaseVersionOnCreateEnforceNameCompliance</fullName>
+        <actions>
+            <name>releaseVersionOnCreateNameUpdate</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <description>When a releaseVersion is created, its name auto-populates if it does not contain the package name</description>
+        <formula>!contains(Name,packageName__c)</formula>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>releaseVersionOnEditCheckNameForBeta</fullName>
+        <actions>
+            <name>releaseVersionSetBetaPackage</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>ReleaseVersion__c.Name</field>
+            <operation>contains</operation>
+            <value>Beta</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>ReleaseVersion__c.Name</field>
+            <operation>contains</operation>
+            <value>beta</value>
+        </criteriaItems>
+        <description>if package Name contains 'Beta' update Boolean isBetaPackage__c</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

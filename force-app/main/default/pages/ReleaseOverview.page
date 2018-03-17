@@ -1,0 +1,58 @@
+<apex:page title="appero: Current Releases" Name="appero Current Releases" showheader="false" docType="html-5.0" controller="ReleaseOverviewController" lightningStylesheets="true">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <apex:slds />    
+        
+        <div style="padding: 1vw;" class="slds-scope">
+            <apex:pageBlock title="appero - Current Releases">
+                <apex:pageBlockSection collapsible="false" title="Last Release: {!release.packageName__c} - {!release.Date__c}">
+                    <apex:pageBlockSectionItem helpText="Package Name">
+                        <apex:outputLabel for="packageName" value="Name"/>
+                        <apex:outputField value="{!release.Name}" id="packageName"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem helpText="Version Number">
+                        <apex:outputLabel for="versionNumber" value="Version Number"/>
+                        <apex:outputText style="font-weight: bold;" value="{!TEXT(release.majorVersionNumber__c)+'.'+TEXT(release.minorVersionNumber__c)}" id="versionNumber"/>    
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem helpText="Click here to install to Production">
+                        <apex:outputLabel for="productionInstallLink" value="Production Install Link"/>
+                        <apex:outputField value="{!release.ProductionInstallURL__c}" id="productionInstallLink"/>    
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem helpText="Click here to install to a Sandbox">
+                        <apex:outputLabel for="sandboxInstallLink" value="Sandbox Install Link"/>
+                        <apex:outputField value="{!release.SandoxInstallURL__c}" id="sandboxInstallLink"/>    
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            <div style="height: 3vh;"/>
+            <apex:PageBlock >
+                <apex:pageBlockSection collapsible="false" title="Latest Beta: {!betaRelease.packageName__c} - {!betaRelease.Date__c}">
+                    <apex:pageBlockSectionItem helpText="Package Name">
+                        <apex:outputLabel for="packageName" value="Name"/>
+                        <apex:outputField value="{!betaRelease.Name}" id="packageName"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem helpText="Version Number">
+                        <apex:outputLabel for="versionNumber" value="Version Number"/>
+                        <apex:outputText style="font-weight: bold;" value="{!TEXT(betaRelease.majorVersionNumber__c)+'.'+TEXT(betaRelease.minorVersionNumber__c)+' Beta'}" id="versionNumber"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem helpText="Click here to install to Production">
+                        <apex:outputLabel for="devInstallLink" value="Developer Edition Install Link"/>
+                        <apex:outputField value="{!betaRelease.ProductionInstallURL__c}" id="devInstallLink"/>    
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem helpText="Click here to install to a Sandbox">
+                        <apex:outputLabel for="sandboxInstallLink" value="Sandbox Install Link"/>
+                        <apex:outputField value="{!betaRelease.SandoxInstallURL__c}" id="sandboxInstallLink"/>    
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            <p align="right">
+                <span class="slds-icon_container slds-icon-standard-account" title="thumbsup">
+                    <svg aria-hidden="true" class="slds-icon">
+                        <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#like')}"></use>
+                    </svg>
+                    <span class="slds-assistive-text">Icon Assistive Text</span>
+                </span>
+                provided with &lt;3 by <a href="http://www.appero.com" target="_blank">appero.com</a>
+            </p>
+        </div>  
+    </html>
+</apex:page>

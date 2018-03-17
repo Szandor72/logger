@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>className__c</fullName>
+    <description>This DebugEntry has been created in the context of Class Name</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This class created this debug entry</inlineHelpText>
+    <label>Class Name</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

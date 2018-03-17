@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Subscribers of this event will receive updates on Logger events</description>
+    <eventType>StandardVolume</eventType>
+    <label>Log</label>
+    <pluralLabel>Logs</pluralLabel>
+</CustomObject>

@@ -1,0 +1,12 @@
+<aura:documentation>
+    <aura:description>
+        <p>The <code>DebugEntryRecordStacktraceViewer</code> component represents the LogEntry JSON of a DebugEntry__c graphically as a tree.</p>
+        <!--More markup here, such as <pre> for code samples-->
+    </aura:description>
+    <aura:example name="DebugEntryRecordStacktraceViewerExample" ref="c:DebugEntryRecordStacktraceViewer" label="Using DebugEntryRecordStacktraceViewer">
+		<p>This example shows a simple setup of <code>DebugEntryRecordStacktraceViewer</code> using static JSON.</p>
+    </aura:example>
+    <aura:example name="mySecondExample" ref="c:mySecondExample" label="Customizing the c:myComponent Component">
+       <p>This example shows how you can customize <code>myComponent</code>.</p>
+    </aura:example>
+</aura:documentation>
