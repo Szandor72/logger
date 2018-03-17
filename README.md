@@ -3,8 +3,9 @@
 Leverages Platform Events to store Log information and uses `AppConfig*` Classes to control behaviour thereof. Automatically detects current class and method name as well as current line and column.
 
 ## Screenshots
-[![So hab ich mir das gedacht](https://i.imgur.com/00yymeb.png)](https://i.imgur.com/00yymeb.png)
+[![DebugEntry Record View](https://i.imgur.com/00yymeb.png)](https://i.imgur.com/00yymeb.png)
 
+[![Developer Console](https://i.imgur.com/PRtY1R6.png)](https://i.imgur.com/PRtY1R6.png)
 
 ## Usage Example
 
