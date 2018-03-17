@@ -1,17 +1,22 @@
 <aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
 
 	<aura:attribute name="entryRecord" 
-									type="Object" 
+									type="Map" 
 									description="Only used to store Log Entries JSON" />
 	<aura:attribute name="debugEntry" 
-									type="Object"
+									type="Map"
 									description="necessary for Dataservice" />
 	<aura:attribute name="entryRecordError" 
 									type="String" description="Error messages from data service" />
 	<aura:attribute name="items" 
-									type="Object" 
+									type="Map" 
 									description="Dummy, remote" />
-
+	<aura:attribute name="expanded" 
+									type="Boolean" 
+									access="public" 
+									default="true"
+									description="Controlls collapse state of tree"/>
+	
 
 	<aura:handler name="init" value="{!this}" action="{!c.onInit}" />
 
@@ -22,11 +27,16 @@
 										 fields="['Name','logEntryJSON__c']" 
 										 targetError="{!v.entryRecordError}" 
 										 recordUpdated="{!c.onInit}" />
-	<lightning:card >
-	<p>{!v.entryRecordError} </p>
-	
-	<div style="padding:18px">
-		<lightning:tree items="{! v.items }" header="StackTrace View. Messages expanded" />
+    
+    
+	<div style="background-color: white">
+	<div class="floatRight slds-p-around_small">
+		<a href="" onclick="{!c.expandTree}">{!v.expanded ? 'Expand ' : 'Collapse '} all</a>
 	</div>
-    </lightning:card>    
+	
+	<div class="slds-p-around_small">
+		<lightning:tree items="{! v.items }" header="Messages expanded by default" />
+	</div>
+	<p>{!v.entryRecordError} </p>
+</div>
 </aura:component>

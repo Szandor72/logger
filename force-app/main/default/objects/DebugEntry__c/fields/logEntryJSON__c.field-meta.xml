@@ -3,7 +3,7 @@
     <fullName>logEntryJSON__c</fullName>
     <description>Contains the JSON of a Log Entry Array</description>
     <externalId>false</externalId>
-    <inlineHelpText>Please ignore if this is visible to you.</inlineHelpText>
+    <inlineHelpText>Raw JSON of logEntries that feed the tree view</inlineHelpText>
     <label>Log Entry JSON</label>
     <length>131072</length>
     <trackTrending>false</trackTrending>

@@ -10,7 +10,6 @@ public with sharing class Logger {
 	@testvisible
 	private class LogEntry {
 		public final Integer level, line, column, cpuTime;
-		public Integer id, parentId;
 		public final String className, methodName, description;
 
 		public LogEntry(String entryDescription) {
@@ -187,7 +186,6 @@ public with sharing class Logger {
 	public static Database.SaveResult sendLog() {
 		cpuTimeEnd = Limits.getCpuTime();
 		cpuTimeUsage = cpuTimeEnd - cpuTimeStart;
-		setIdsOnLogEntries();
 		Log__e logEvent = new Log__e();
 		logEvent.Trace__c = currentClassName+':'+currentMethodName+':'+currentLine+':'+currentColumn+':'+cpuTimeUsage+':'+UserInfo.getUserId();
 		logEvent.LogEntriesJSON__c = JSON.serializePretty(logEntries);
@@ -195,34 +193,5 @@ public with sharing class Logger {
 		logEvent.startDateTime__c = startDateTime;
 
 		return EventBus.publish(logEvent);
-	}
-
-	private static void setIdsOnLogEntries() {
-		// build mapLvlToLevelMembers
-		Map<Integer,List<LogEntry> > mapLevelToLevelMembers = new Map<Integer,List<LogEntry> >();
-		for (Integer i = 0; i < logEntries.size(); i++) {
-			LogEntry entry = logEntries[i];
-			entry.id = i; 
-			if (!mapLevelToLevelMembers.keySet().contains(entry.level)) {
-				mapLevelToLevelMembers.put(entry.level, new List<LogEntry>{entry});
-			} else {
-				mapLevelToLevelMembers.get(entry.level).add(entry);
-			}
-		}
-		for (LogEntry entry : logEntries) {
-			if (entry.level == 0) {
-				entry.parentId = 0;
-			}
-			if (mapLevelToLevelMembers.keySet().contains(entry.level-1)) {
-				List<LogEntry> possibleParents = mapLevelToLevelMembers.get(entry.level-1);
-				for (LogEntry possibleParentEntry : possibleParents) {
-					 if(entry.id > possibleParentEntry.id) {
-						 entry.parentId = possibleParentEntry.Id;
-					 }
-				}
-			} else {
-				entry.parentId = 0;
-			}
-		}
 	}
 }

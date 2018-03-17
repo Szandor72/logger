@@ -1,10 +1,44 @@
 ({
-  convertToTree: function (logEntries) {
+  convertToTree: function (logEntries, isInit) {
     var items;
+    setIdAndParentId(logEntries);
     var treeItemList = convertToTreeItems(logEntries);
     items = list_to_tree(treeItemList);
     return items;
 
+    function setIdAndParentId(entries) {
+      var mapLevelToEntries = {}; // logentry.level => logEntries[]
+      var i = 0;
+      for (i; i < entries.length; i++) {
+        var logEntry = entries[i];
+        logEntry.id = i;
+        if (!mapLevelToEntries.hasOwnProperty(logEntry.level)) {
+          mapLevelToEntries[logEntry.level] = {}
+          mapLevelToEntries[logEntry.level].logEntries = [] ;
+        } else {
+          mapLevelToEntries[logEntry.level].logEntries.push(logEntry);
+        }
+      }
+
+      for (i = 0; i < entries.length; i++) {
+        var entry = entries[i];
+        if (entry.level === 0) {
+          entry.parentId = 0;
+        }
+        if (mapLevelToEntries.hasOwnProperty(entry.level - 1)) {
+          var possibleParents = mapLevelToEntries[entry.level - 1].logEntries;
+          var n = 0;
+          for (n; n < possibleParents.length; n++) {
+            var possibleParent = possibleParents[n];
+            if (entry.id > possibleParent.id) {
+              entry.parentId = possibleParent.id;
+            }
+          }
+        } else {
+          entry.parentId = 0;
+        }
+      }
+    }
 
     function convertToTreeItems(entries) {
       var treeItems = [];
@@ -12,17 +46,21 @@
         var label = '';
         var entry = entries[i];
         if ($A.util.isEmpty(entry.description)) {
-          label = entry.className + ': ' + entry.methodName + ' (' + entry.line + ',' + entry.column + ')';
+          label = entry.className + '.' + entry.methodName + ' ' + entry.line + ',' + entry.column;
         } else {
-          label = entry.description + ' || [' + entry.className + ': ' + entry.methodName + ' (' + entry.line + ',' + entry.column + ')]';
+          label = '"'+entry.description+'"' + ' ' + entry.className + '.' + entry.methodName;
         }
         var item = {
           "label": label,
           "name": entry.id + '',
           "parentId": entry.parentId + '',
-          "expanded": entry.description.length > 0 ? true : false,
           "items": []
         };
+        if(isInit) {
+          item.expanded =  entry.description.length > 0 ? true : false;
+        } else {
+          item.expanded = entry.expanded;
+        }
         treeItems.push(item);
       }
       return treeItems;

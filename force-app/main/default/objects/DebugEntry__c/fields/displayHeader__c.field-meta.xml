@@ -3,7 +3,25 @@
     <fullName>displayHeader__c</fullName>
     <description>Used on compact layout only</description>
     <externalId>false</externalId>
-    <formula>className__c + ' : ' + methodName__c + ' at ' + TEXT(startDateTime__c)</formula>
+    <formula>className__c + '.' + methodName__c + ' ' + text(DAY( DATEVALUE(startDateTime__c) )) +' '+ CASE( MONTH( DATEVALUE(startDateTime__c) ) , 
+1, "Jan", 
+2, "Feb", 
+3, "Mar", 
+4, "Apr", 
+5, "May", 
+6, "Jun", 
+7, "Jul", 
+8, "Aug", 
+9, "Sep", 
+10, "Oct", 
+11, "Nov", 
+"Dec") +', '+ Text(YEAR( DATEVALUE(startDateTime__c) )) + ' - ' +IF(
+ISBLANK(startDateTime__c ),"0",
+TEXT(MOD(VALUE(
+Left(
+right( trim(TEXT(startDateTime__c) ),9),2))+1,24)) /* +1 = GMT offset */
+&amp;":"&amp;mid(right( trim(TEXT(startDateTime__c) ),9),4,2)
+)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <inlineHelpText>Please ignore</inlineHelpText>
     <label>Display Header</label>
