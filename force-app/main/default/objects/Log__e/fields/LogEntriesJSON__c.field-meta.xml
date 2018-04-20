@@ -7,7 +7,7 @@
     <isNameField>false</isNameField>
     <isSortingDisabled>false</isSortingDisabled>
     <label>LogEntries JSON</label>
-    <length>32768</length>
+    <length>131000</length>
     <type>LongTextArea</type>
     <visibleLines>5</visibleLines>
 </CustomField>
