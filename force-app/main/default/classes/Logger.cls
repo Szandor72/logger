@@ -183,15 +183,58 @@ public with sharing class Logger {
 	}
 
 	@testvisible
-	public static Database.SaveResult sendLog() {
+	public static void sendLog() {
+	  String logEntriesJSON = JSON.serializePretty(logEntries);
+		Integer logLength = logEntriesJSON.length();
+
+		if(logLength <= 130000) {
+			sendLogEvent(logEntriesJSON);
+			return; 
+		}
+		sendLogEvents(logEntriesJSON);
+	}
+
+	@testvisible 
+	private static Log__e getLogEvent(String logEntriesJSON) {
 		cpuTimeEnd = Limits.getCpuTime();
 		cpuTimeUsage = cpuTimeEnd - cpuTimeStart;
 		Log__e logEvent = new Log__e();
 		logEvent.Trace__c = currentClassName+':'+currentMethodName+':'+currentLine+':'+currentColumn+':'+cpuTimeUsage+':'+UserInfo.getUserId();
-		logEvent.LogEntriesJSON__c = JSON.serializePretty(logEntries);
+		logEvent.LogEntriesJSON__c = logEntriesJSON;
 		logEvent.isException__c = !String.isBlank(exceptionTrace);
 		logEvent.startDateTime__c = startDateTime;
-
-		return EventBus.publish(logEvent);
+		return logEvent;
+		// at least one new field necessary on log__e
+		// type externalId (if possible?)
+		// for the whole context of the log, a unique id needs to be generated, maintained,
+		// and reset appropriately
 	}
+
+	@testvisible
+	private static Database.SaveResult sendLogEvent(String logEntriesJSON) {
+		return EventBus.publish(getLogEvent(logEntriesJSON));
+	}
+
+	@testvisible
+	private static void sendLogEvents(String logEntriesJSON) {
+		List<String> jsonParts = splitLogEntryJSON(logEntriesJSON);
+		List<Log__e> logEvents = new List<Log__e>();
+		For (String jsonPart : jsonParts) {
+			 logEvents.add(getLogEvent(jsonPart));
+		}
+		EventBus.publish(logEvents);
+	}
+
+	@testvisible
+	private static List<String> splitLogEntryJSON(String logEntriesJSON) {
+		List<String> parts = new List<String>();
+		while (logEntriesJSON.length() >= 130000){
+    	parts.add(logEntriesJSON.substring(0,130000));
+    	logEntriesJSON = logEntriesJSON.substring(130000,logEntriesJSON.length());
+		}
+		return parts; 
+	}
+
+
+	
 }
