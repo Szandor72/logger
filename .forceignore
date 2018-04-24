@@ -8,3 +8,4 @@ Custom: Support Profile
 Account_Record_Page
 app\app.app
 force-app/main/default/settings/Security.settings-meta.xml
+**/scrabble
