@@ -74,9 +74,9 @@ private class LoggerTest {
         AppConfigSupport.saveExceptionLogs = false; 
         AppConfigSupport.saveAllLogs=true;
         Test.startTest();
-        Database.SaveResult result = Logger.sendLog();
+        Boolean isSuccess = Logger.sendLog();
         Test.stopTest();
-        System.assertEquals(true, result.isSuccess(),
+        System.assertEquals(true, isSuccess,
                             'Event must save successfully');
         System.assertEquals(0,[SELECT count() from DebugEntry__c],
                             'No Entry saved, logging deactivated');
@@ -91,22 +91,22 @@ private class LoggerTest {
         Logger.logEntries = new List<Logger.LogEntry>{new Logger.LogEntry('test message')};
         AppConfigSupport.saveAllLogs=true;
         Test.startTest();
-        Database.SaveResult result = Logger.sendLog();
+        Boolean isSuccess = Logger.sendLog();
         Test.stopTest();
-        System.assertEquals(true, result.isSuccess(),
+        System.assertEquals(true, isSuccess,
                             'Event must save successfully');
         System.assertEquals(0,[SELECT count() from DebugEntry__c],
                             'No Entry saved, Logger lacks trace information. Only Classname given.');
     }
 
     @isTest
-    private static void sendLog_Success() {
+    private static void sendLog_singleEvent_Success() {
         AppConfigSupport.saveAllLogs=true;
         Test.startTest();
         Logger.log('test message');
-        Database.SaveResult result = Logger.sendLog();
+        Boolean isSuccess = Logger.sendLog();
         Test.stopTest();
-        System.assertEquals(true, result.isSuccess(),
+        System.assertEquals(true, isSuccess,
                             'Event must save successfully');
         List<debugEntry__c> entries = [SELECT Id, LogEntryJSON__c, cpuTimeUsage__c from DebugEntry__c Limit 10];
         System.assertEquals(1,entries.size(),
@@ -114,6 +114,27 @@ private class LoggerTest {
         System.assertNotEquals(true, String.isBlank(entries[0].logEntryJSON__c),'JSON is filled');
         System.assertNotEquals(null, entries[0].cpuTimeUsage__c,'CPU Time is filled');       
         System.assert(entries[0].cpuTimeUsage__c > 0,'CPU Time is greater 0');             
+    }
+
+    @isTest
+    private static void sendLog_clusterEvent_Success() {
+        AppConfigSupport.saveAllLogs=true;
+        Test.startTest();
+        Logger.push();
+        Logger.log('test message');
+        Logger.push();
+        Logger.jsonCharLimit = 10;
+        Decimal eventsSent = Logger.getLogJSON().length() / 10; 
+        Boolean isSuccess = Logger.sendLog();
+        Test.stopTest();
+        system.assert(isSuccess,'no saveresult errors');
+        //todo below needs to be refactored after debugentry service adaption
+        List<debugEntry__c> entries = [SELECT LogEntryJSON__c, 
+                                              cpuTimeUsage__c
+                                              FROM DebugEntry__c Limit 1000];
+        System.assert(entries.size()>=eventsSent.intValue(),'More than one debug entry inserted');
+       // System.assertNotEquals(null, entries[2].clusterId__c,'Cluster Id needs to be present');
+       // System.assert(entries[2].clusterSequence__c > 0,'Sequence needs to be stored')
     }
 
     @isTest
@@ -152,8 +173,6 @@ private class LoggerTest {
         Test.stopTest();
         System.assertEquals(0, Logger.currentLoggingLevel,'Loglevel = 0');
     }
-
-
 
     @isTest
     private static void disabledLogging() {

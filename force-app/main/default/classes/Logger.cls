@@ -6,6 +6,7 @@ public with sharing class Logger {
 	@testvisible private static String currentClassName, currentMethodName;
 	@testvisible private static Integer currentLine, currentColumn, cpuTimeUsage, cpuTimeStart, cpuTimeEnd;
 	@testvisible private static DateTime startDateTime;
+	@testvisible private static Integer jsonCharLimit = 130000;
 
 	@testvisible
 	private class LogEntry {
@@ -183,15 +184,22 @@ public with sharing class Logger {
 	}
 
 	@testvisible
-	public static void sendLog() {
+	public static Boolean sendLog() {
 	  String logEntriesJSON = JSON.serializePretty(logEntries);
 		Integer logLength = logEntriesJSON.length();
 
-		if(logLength <= 130000) {
-			sendLogEvent(logEntriesJSON);
-			return; 
+		if(logLength <= jsonCharLimit) {
+			Database.SaveResult result = sendLogEvent(logEntriesJSON);
+			return result.isSuccess(); 
 		}
-		sendLogEvents(logEntriesJSON);
+		List<Database.SaveResult> results = sendLogEvents(logEntriesJSON);
+
+		For (Database.SaveResult result : results) {
+			if(!result.isSuccess()){
+				return false; 
+			}
+		}
+		return true; 
 	}
 
 	@testvisible 
@@ -216,25 +224,29 @@ public with sharing class Logger {
 	}
 
 	@testvisible
-	private static void sendLogEvents(String logEntriesJSON) {
+	private static List<Database.SaveResult> sendLogEvents(String logEntriesJSON) {
 		List<String> jsonParts = splitLogEntryJSON(logEntriesJSON);
 		List<Log__e> logEvents = new List<Log__e>();
-		For (String jsonPart : jsonParts) {
-			 logEvents.add(getLogEvent(jsonPart));
+		String uniqueId = Utility.getUniqueId(); 
+		For (Integer i = 0; i < jsonParts.size(); i++) {
+			 Log__e log = getLogEvent(jsonParts[i]); 
+			 log.clusterId__c = uniqueId; 
+			 log.clusterSequence__c = i; 
+			 logEvents.add(log);
 		}
-		EventBus.publish(logEvents);
+		return EventBus.publish(logEvents);
 	}
 
 	@testvisible
 	private static List<String> splitLogEntryJSON(String logEntriesJSON) {
 		List<String> parts = new List<String>();
-		while (logEntriesJSON.length() >= 130000){
-    	parts.add(logEntriesJSON.substring(0,130000));
-    	logEntriesJSON = logEntriesJSON.substring(130000,logEntriesJSON.length());
-		}
+		while (logEntriesJSON.length() >= jsonCharLimit){
+    	parts.add(logEntriesJSON.substring(0,jsonCharLimit));
+    	logEntriesJSON = logEntriesJSON.substring(jsonCharLimit,logEntriesJSON.length());
+		}	
 		return parts; 
 	}
 
 
-	
+
 }
