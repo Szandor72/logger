@@ -121,20 +121,12 @@ private class LoggerTest {
         AppConfigSupport.saveAllLogs=true;
         Test.startTest();
         Logger.push();
-        Logger.log('test message');
+        Logger.log('test message longer than 10 chars');
         Logger.push();
-        Logger.jsonCharLimit = 10;
-        Decimal eventsSent = Logger.getLogJSON().length() / 10; 
+        Logger.jsonCharLimit = 10; 
         Boolean isSuccess = Logger.sendLog();
         Test.stopTest();
         system.assert(isSuccess,'no saveresult errors');
-        //todo below needs to be refactored after debugentry service adaption
-        List<debugEntry__c> entries = [SELECT LogEntryJSON__c, 
-                                              cpuTimeUsage__c
-                                              FROM DebugEntry__c Limit 1000];
-        System.assert(entries.size()>=eventsSent.intValue(),'More than one debug entry inserted');
-       // System.assertNotEquals(null, entries[2].clusterId__c,'Cluster Id needs to be present');
-       // System.assert(entries[2].clusterSequence__c > 0,'Sequence needs to be stored')
     }
 
     @isTest

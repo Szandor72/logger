@@ -212,10 +212,6 @@ public with sharing class Logger {
 		logEvent.isException__c = !String.isBlank(exceptionTrace);
 		logEvent.startDateTime__c = startDateTime;
 		return logEvent;
-		// at least one new field necessary on log__e
-		// type externalId (if possible?)
-		// for the whole context of the log, a unique id needs to be generated, maintained,
-		// and reset appropriately
 	}
 
 	@testvisible
@@ -234,7 +230,7 @@ public with sharing class Logger {
 			 log.clusterSequence__c = i; 
 			 logEvents.add(log);
 		}
-		return EventBus.publish(logEvents);
+        return EventBus.publish(logEvents);
 	}
 
 	@testvisible
