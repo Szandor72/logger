@@ -116,6 +116,18 @@ private class LoggerTest {
         System.assert(entries[0].cpuTimeUsage__c > 0,'CPU Time is greater 0');             
     }
 
+        @isTest
+    private static void handleJSONLength_Success() {
+        AppConfigSupport.saveAllLogs=true;
+        Logger.log('test message');
+        Logger.log('test message with some more characters than the last one');
+        Test.startTest();
+        String longJSON = Logger.createJSON(Logger.logEntries);
+        Logger.JSONCharLimit = 5; 
+        String shortJSON = Logger.createJSON(Logger.logEntries);       
+        System.assert(shortJSON.length() < longJSON.length(),'Non prettified must be shorter than prettified JSON');
+    }
+
     @isTest
     private static void pop_DecrementsLogLevel_Success() {
         Test.startTest();
