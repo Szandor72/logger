@@ -6,6 +6,8 @@ public with sharing class Logger {
 	@testvisible private static String currentClassName, currentMethodName;
 	@testvisible private static Integer currentLine, currentColumn, cpuTimeUsage, cpuTimeStart, cpuTimeEnd;
 	@testvisible private static DateTime startDateTime;
+	@testvisible private static Integer jsonCharLimit = 130000;
+
 
 	@testvisible
 	private class LogEntry {
@@ -184,14 +186,26 @@ public with sharing class Logger {
 
 	@testvisible
 	public static Database.SaveResult sendLog() {
+		//continue here to check JSONChar Limit // jsonCharLimit
+		
 		cpuTimeEnd = Limits.getCpuTime();
 		cpuTimeUsage = cpuTimeEnd - cpuTimeStart;
 		Log__e logEvent = new Log__e();
 		logEvent.Trace__c = currentClassName+':'+currentMethodName+':'+currentLine+':'+currentColumn+':'+cpuTimeUsage+':'+UserInfo.getUserId();
-		logEvent.LogEntriesJSON__c = JSON.serializePretty(logEntries);
+		logEvent.LogEntriesJSON__c = createJSON(logEntries);
 		logEvent.isException__c = !String.isBlank(exceptionTrace);
 		logEvent.startDateTime__c = startDateTime;
 
 		return EventBus.publish(logEvent);
+	}
+
+	@testvisible 
+	public static String createJSON(List<LogEntry> entries) {
+		String jsonString = JSON.serializePretty(entries);
+		if (jsonString.length() < jsonCharLimit) {
+			return jsonString; 
+		}
+
+		return JSON.serialize(entries);
 	}
 }
