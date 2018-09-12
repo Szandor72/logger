@@ -30,8 +30,8 @@ public with sharing class Logger {
 
 	public static List<String> stackTrace = new List<String>();
 
-//this will store stackTrace References even in managed/subscriber context
-// subscriber facing exception messages do not contain a stacktrace
+	//this will store stackTrace References even in managed/subscriber context
+	// subscriber facing exception messages do not contain a stacktrace
 	public static String exceptionTrace = '';
 
 	public static void log(String message, String stackTraceString) {
@@ -186,8 +186,6 @@ public with sharing class Logger {
 
 	@testvisible
 	public static Database.SaveResult sendLog() {
-		//continue here to check JSONChar Limit // jsonCharLimit
-		
 		cpuTimeEnd = Limits.getCpuTime();
 		cpuTimeUsage = cpuTimeEnd - cpuTimeStart;
 		Log__e logEvent = new Log__e();
@@ -205,7 +203,25 @@ public with sharing class Logger {
 		if (jsonString.length() < jsonCharLimit) {
 			return jsonString; 
 		}
+		jsonString = JSON.serialize(entries);
+		if (jsonString.length() < jsonCharLimit) {
+			return jsonString; 
+		}
 
-		return JSON.serialize(entries);
-	}
+		Integer truncateTo = Integer.ValueOf(entries.size() * 0.5);
+		for (Integer i; i < truncateTo; i++) {
+			entries.remove(entries.size()-1);
+		}
+
+		LogEntry entry  = new LogEntry('!!! Log size exceeded !!!');
+		entries.add(entry);
+		jsonString = JSON.serialize(entries);
+		if (jsonString.length() < jsonCharLimit) {
+			return jsonString; 
+		}
+
+		entries.clear();
+		entries.add(entry);
+		return JSON.serializePretty(entries);
+  }
 }
