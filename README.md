@@ -1,4 +1,4 @@
-# An attempt at an Apex Logger Service for the Salesforce's Lightning Platform
+# An attempt at an Apex Logger Service for the Salesforce Lightning Platform
 
 Leverages Platform Events to store Log information and uses `AppConfig*` Classes to control behaviour thereof. Automatically detects current class and method name as well as current line and column.
 
