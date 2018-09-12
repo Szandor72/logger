@@ -126,6 +126,7 @@ private class LoggerTest {
         Logger.JSONCharLimit = 5; 
         String shortJSON = Logger.createJSON(Logger.logEntries);       
         System.assert(shortJSON.length() < longJSON.length(),'Non prettified must be shorter than prettified JSON');
+        System.assert(shortJSON.containsIgnoreCase('!!! Log size exceeded !!!'),'JSONs that are too long and get truncated are marked');
     }
 
     @isTest
