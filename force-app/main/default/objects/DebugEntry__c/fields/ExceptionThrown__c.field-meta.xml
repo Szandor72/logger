@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExceptionThrown__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>If Logger logs at least one Exceptions, this field is true</description>
+    <externalId>false</externalId>
+    <inlineHelpText>At least one exception was logged during execution</inlineHelpText>
+    <label>Exception Thrown</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
