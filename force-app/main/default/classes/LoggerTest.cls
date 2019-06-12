@@ -163,7 +163,6 @@ private class LoggerTest {
 
 	@isTest
 	private static void logTrigger_AllVariations_Success() {
-		AppConfigMain.isActive = true;
 		Test.startTest();
 		Logger.logTrigger(null, 'fakeTrace');
 		Logger.log('message');
