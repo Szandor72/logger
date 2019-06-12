@@ -15,7 +15,7 @@ public with sharing class Logger {
 		public final String className, methodName, description;
 
 		public LogEntry(String entryDescription) {
-			this.level = currentLoggingLevel;
+			this.level = decrementLevel && currentLoggingLevel > 0 ? currentLoggingLevel-1 : currentLoggingLevel;
 			this.description = entryDescription;
 			this.className = currentClassName;
 			this.methodName = currentMethodName;
@@ -26,7 +26,12 @@ public with sharing class Logger {
 	}
 
 	@testvisible private static Integer currentLoggingLevel = 0;
+	@testvisible private static List<System.TriggerOperation> executedTriggerOperations = new List<System.TriggerOperation>();
+	@testvisible private static System.TriggerOperation currentTriggerOperation;
+
 	@testvisible private static List<LogEntry> logEntries;
+
+	@testvisible private static Boolean decrementLevel = false;
 
 	public static List<String> stackTrace = new List<String>();
 
@@ -34,7 +39,8 @@ public with sharing class Logger {
 	// subscriber facing exception messages do not contain a stacktrace
 	public static String exceptionTrace = '';
 
-	public static void log(String message, String stackTraceString) {
+	@testvisible
+	private static void log(String message, String stackTraceString) {
 		if (!loggingEnabled) {
 			return;
 		}
@@ -54,6 +60,31 @@ public with sharing class Logger {
 			logEntries = new List<LogEntry>();
 		}
 		logEntries.add(new LogEntry(message));
+	}
+
+	public static void logTrigger(System.TriggerOperation newTriggerOperation, String stackTraceString) {
+		if (!loggingEnabled) {
+			return;
+		}
+
+		if (newTriggerOperation == null) {
+			return;
+		}
+		if (newTriggerOperation == currentTriggerOperation) {
+			currentLoggingLevel-=1;
+			log('end:' +String.valueOf(currentTriggerOperation), stackTraceString);
+			popAll();
+			logEntries = new List<LogEntry>();
+			decrementLevel = false;
+		} else {
+			executedTriggerOperations.add(newTriggerOperation);
+			currentTriggerOperation = newTriggerOperation;
+			log('start:' +String.valueOf(currentTriggerOperation), stackTraceString);
+			currentLoggingLevel+=1;
+			decrementLevel = true;
+		}
+
+
 	}
 
 	private static void logTrace(String stackTraceString) {
@@ -90,7 +121,9 @@ public with sharing class Logger {
 		if (!loggingEnabled) {
 			return;
 		}
+
 		currentLoggingLevel+=1;
+
 		String stackTraceString = new DmlException().getStackTraceString();
 		stackTraceString = stackTraceString.substringAfter('\n');
 		stackTraceString = stackTraceString.substringBefore('\n');
@@ -108,7 +141,6 @@ public with sharing class Logger {
 		}
 
 		//todo decide if writing to debugs is clever
-		// is there anything else to be done here? save log? send messages? send events?
 		if (currentLoggingLevel == 0) {
 			if(Utility.isSandbox || Utility.isDevOrg) {
 				System.Debug(LoggingLevel.Info,'Log '+System.Now()+' \n' + printLog());
@@ -141,7 +173,8 @@ public with sharing class Logger {
 
 		String result = '';
 		for(Logger.LogEntry entry : logEntries) {
-			Integer endIndex = 3 * entry.level;
+			Integer entryLevel = entry.level < 0 ? 0 : entry.level;
+			Integer endIndex = 3 * entryLevel;
 			if (endIndex >= padding.length()) {
 				endIndex = padding.length()-1;
 			}
@@ -149,7 +182,9 @@ public with sharing class Logger {
 			result += padding.substring(0,endIndex)+'> ';
 			result += String.isBlank(entry.description) ? entry.methodName  : '';
 			result += !String.isBlank(entry.description) ? ' '+entry.description  : '';
+			result += ' logLevel: '+entryLevel;
 			result += '\n';
+
 		}
 		return result;
 	}
@@ -174,8 +209,8 @@ public with sharing class Logger {
 
 	private static Matcher generateMatcher(String firstLine) {
 		return Pattern.compile(
-		        '(?i)^(?:class\\.)?([^.]+)\\.?([^\\.\\:]+)?[\\.\\:]?([^\\.\\:]*): line (\\d+), column (\\d+)$'
-		        ).matcher(firstLine);
+			'(?i)^(?:class\\.)?([^.]+)\\.?([^\\.\\:]+)?[\\.\\:]?([^\\.\\:]*): line (\\d+), column (\\d+)$'
+			).matcher(firstLine);
 	}
 
 	private static String prettifyMethodName(String name) {
@@ -185,7 +220,7 @@ public with sharing class Logger {
 	}
 
 	@testvisible
-	public static Database.SaveResult sendLog() {
+	private static Database.SaveResult sendLog() {
 		cpuTimeEnd = Limits.getCpuTime();
 		cpuTimeUsage = cpuTimeEnd - cpuTimeStart;
 		Log__e logEvent = new Log__e();
@@ -193,19 +228,22 @@ public with sharing class Logger {
 		logEvent.LogEntriesJSON__c = createJSON(logEntries);
 		logEvent.isException__c = !String.isBlank(exceptionTrace);
 		logEvent.startDateTime__c = startDateTime;
+		if (currentTriggerOperation != null) {
+			logEvent.TriggerOperation__c = String.valueOf(currentTriggerOperation);
+		}
 
 		return EventBus.publish(logEvent);
 	}
 
-	@testvisible 
-	public static String createJSON(List<LogEntry> entries) {
+	@testvisible
+	private static String createJSON(List<LogEntry> entries) {
 		String jsonString = JSON.serializePretty(entries);
 		if (jsonString.length() < jsonCharLimit) {
-			return jsonString; 
+			return jsonString;
 		}
 		jsonString = JSON.serialize(entries);
 		if (jsonString.length() < jsonCharLimit) {
-			return jsonString; 
+			return jsonString;
 		}
 
 		Integer truncateTo = Integer.ValueOf(entries.size() * 0.5);
@@ -217,11 +255,11 @@ public with sharing class Logger {
 		entries.add(entry);
 		jsonString = JSON.serialize(entries);
 		if (jsonString.length() < jsonCharLimit) {
-			return jsonString; 
+			return jsonString;
 		}
 
 		entries.clear();
 		entries.add(entry);
 		return JSON.serializePretty(entries);
-  }
+	}
 }
