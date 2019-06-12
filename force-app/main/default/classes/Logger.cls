@@ -1,6 +1,8 @@
 public with sharing class Logger {
 
-	public static Boolean loggingEnabled = AppConfigSupport.enableLogging;
+	@testvisible private static LoggerConfig config = LoggerConfig.getConfig();
+	@testvisible private static Boolean loggingEnabled = config.enableLogging;
+
 
 
 	@testvisible private static String currentClassName, currentMethodName;

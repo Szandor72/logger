@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsActive__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>If at least one active rule exists, logging is enabled.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Disable if you want to ignore this rule. If all rules are de-activated, logging is disabled.</inlineHelpText>
+    <label>is Active</label>
+    <type>Checkbox</type>
+</CustomField>

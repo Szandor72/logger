@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Stores configuration for logging. Logging is generally enabled, if at least one active rule exists.</description>
+    <label>Logger Configuration</label>
+    <pluralLabel>Logger Configurations</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

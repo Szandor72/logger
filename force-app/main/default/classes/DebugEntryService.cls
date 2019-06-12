@@ -1,9 +1,11 @@
 public with sharing class DebugEntryService {
 
 	public static void saveLogs(List<Log__e> logs) {
+		LoggerConfig config = LoggerConfig.getConfig();
 		List<DebugEntry__c> newDebugEntries = new List<DebugEntry__c>();
 
 		For (Log__e log: logs) {
+			Boolean processDebugEntry = false;
 
 			List<String> traceInfo = log.Trace__c.split(':');
 			if (!isValid(traceInfo)) {
@@ -19,12 +21,26 @@ public with sharing class DebugEntryService {
 			entry.startDateTime__c = log.startDateTime__c;
 			entry.logEntryJSON__c = log.LogEntriesJSON__c;
 
-			if (AppConfigSupport.saveAllLogs) {
+			if (config.saveAllLogs) {
+
+				processDebugEntry = true;
+			} else if (config.saveExceptionLogs
+			           && log.isException__c) {
+
+				processDebugEntry = true;
+
+			} else if (config.saveUserLogs
+			           && FeatureManagement.checkPermission('EnableLogging')) {
+
+				processDebugEntry = true;
+			} else if (!String.isNotBlank(config.classNamesToLog)
+			           && config.classNamesToLog.contains(entry.className__c)) {
+
+				processDebugEntry = true;
+			}
+
+			if (processDebugEntry) {
 				newDebugEntries.add(entry);
-			} else if (AppConfigSupport.saveExceptionLogs) {
-				if (log.isException__c) {
-					newDebugEntries.add(entry);
-				}
 			}
 		}
 		insert newDebugEntries;

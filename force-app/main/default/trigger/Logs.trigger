@@ -1,5 +1,7 @@
 trigger Logs on Log__e (after insert) {
-    if (AppConfigMain.isActive && AppConfigSupport.enableLogging) {
-        DebugEntryService.saveLogs(Trigger.new);
-    }
+	private static LoggerConfig config = LoggerConfig.getConfig();
+	if (config.enableLogging) {
+		DebugEntryService.saveLogs(Trigger.new);
+	}
+
 }
