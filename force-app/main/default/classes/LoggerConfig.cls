@@ -31,9 +31,9 @@ public with sharing class LoggerConfig {
 		saveUserLogs = false;
 		classNamesToLog = '';
 
-		LoggerConfig__mdt setting = [SELECT IsActive__c, LogsToSave__c, ClassNames__c, AdditionalClassNames__c FROM LoggerConfig__mdt WHERE IsActive__c = true ORDER BY DeveloperName ASC LIMIT 1];
+		List<LoggerConfig__mdt> settings = [SELECT IsActive__c, LogsToSave__c, ClassNames__c, AdditionalClassNames__c FROM LoggerConfig__mdt WHERE IsActive__c = true ORDER BY DeveloperName ASC];
+		LoggerConfig__mdt setting = settings[0];
 		if (setting == null) {
-			enableLogging = false;
 			return;
 		}
 		enableLogging = true;
@@ -49,7 +49,7 @@ public with sharing class LoggerConfig {
 			when 'UserLogs' {
 				saveUserLogs = true;
 			}
-			when 'ByClass' {
+			when 'ForClass' {
 				classNamesToLog =  setting.ClassNames__c + setting.AdditionalClassNames__c;
 			}
 		}

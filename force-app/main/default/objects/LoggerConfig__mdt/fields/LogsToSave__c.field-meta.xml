@@ -33,7 +33,7 @@
                 <label>User Logs</label>
             </value>
             <value>
-                <fullName>For Class</fullName>
+                <fullName>ForClass</fullName>
                 <default>false</default>
                 <label>For Class</label>
             </value>

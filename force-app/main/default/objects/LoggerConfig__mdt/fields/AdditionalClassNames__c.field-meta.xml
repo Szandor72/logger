@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AdditionalClassNames__c</fullName>
+    <description>Additional Classes to write logs for.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Works only if Save Behaviour is set to &#39;For Classes&#39;. Additional Classes to write logs for.</inlineHelpText>
+    <label>Additional Class Names</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
