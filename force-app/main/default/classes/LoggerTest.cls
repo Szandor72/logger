@@ -135,6 +135,23 @@ private class LoggerTest {
 	}
 
 	@isTest
+	private static void sendLog_UserBasedLogging_Success() {
+		LoggerConfig.enableLoggingOverride = true;
+		LoggerConfig.saveUserLogsOverride = true;
+		Test.startTest();
+		Logger.log('test message');
+		Database.SaveResult result = Logger.sendLog();
+		Test.stopTest();
+		System.assertEquals(true, result.isSuccess(),
+		                    'Event must save successfully');
+		List<debugEntry__c> entries = [SELECT Id, LogEntryJSON__c, cpuTimeUsage__c from DebugEntry__c Limit 10];
+		System.assertEquals(1,entries.size(),
+		                    'One Entry saved');
+		System.assertNotEquals(true, String.isBlank(entries[0].logEntryJSON__c),'JSON is filled');
+		System.assertNotEquals(null, entries[0].cpuTimeUsage__c,'CPU Time is filled');
+	}
+
+	@isTest
 	private static void handleJSONLength_Success() {
 		LoggerConfig.enableLoggingOverride = true;
 		Logger.log('test message');

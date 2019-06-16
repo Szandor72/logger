@@ -6,6 +6,9 @@ public with sharing class LoggerConfig {
 	public Boolean saveUserLogs { public get; private set;}
 	public String classNamesToLog {public get; private set;}
 
+
+	public static Id runningUserId;
+
 	// used for easier testing
 	@testvisible private static Boolean enableLoggingOverride = false;
 	@testvisible private static Boolean saveExceptionLogsOverride = false;
@@ -16,14 +19,7 @@ public with sharing class LoggerConfig {
 	private static LoggerConfig loggerConfigInstance;
 
 	private LoggerConfig() {
-		if (Test.isRunningTest()) {
-			enableLogging = enableLoggingOverride;
-			saveExceptionLogs= saveExceptionLogsOverride;
-			saveAllLogs = saveAllLogsOverride;
-			saveUserLogs = saveExceptionLogsOverride;
-			classNamesToLog = classNamesToLogOverride;
-			return;
-		}
+
 
 		enableLogging = false;
 		saveAllLogs = false;
@@ -53,6 +49,15 @@ public with sharing class LoggerConfig {
 				classNamesToLog =  setting.ClassNames__c + setting.AdditionalClassNames__c;
 			}
 		}
+
+		if (Test.isRunningTest()) {
+			enableLogging = enableLoggingOverride;
+			saveExceptionLogs= saveExceptionLogsOverride;
+			saveAllLogs = saveAllLogsOverride;
+			saveUserLogs = saveUserLogsOverride;
+			classNamesToLog = classNamesToLogOverride;
+		}
+
 		loggerConfigInstance = this;
 	}
 
