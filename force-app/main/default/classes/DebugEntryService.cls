@@ -25,7 +25,7 @@ public with sharing class DebugEntryService {
 			entry.runningUser__c = traceInfo[5];
 			entry.startDateTime__c = log.startDateTime__c;
 			entry.logEntryJSON__c = log.LogEntriesJSON__c;
-
+			entry.TriggerOperation__c = log.TriggerOperation__c;
 			if (config.saveAllLogs) {
 
 				processDebugEntry = true;

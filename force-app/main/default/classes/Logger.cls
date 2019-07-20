@@ -64,7 +64,7 @@ public with sharing class Logger {
 		logEntries.add(new LogEntry(message));
 	}
 
-	public static void logTrigger(System.TriggerOperation newTriggerOperation, String stackTraceString) {
+	public static void logTrigger(System.TriggerOperation newTriggerOperation) {
 		if (!loggingEnabled) {
 			return;
 		}
@@ -72,16 +72,19 @@ public with sharing class Logger {
 		if (newTriggerOperation == null) {
 			return;
 		}
+		String stackTraceString = new DmlException().getStackTraceString();
+		stackTraceString = stackTraceString.substringAfter('\n');
+		stackTraceString = stackTraceString.substringBefore('\n');
 		if (newTriggerOperation == currentTriggerOperation) {
 			currentLoggingLevel-=1;
-			log('end:' +String.valueOf(currentTriggerOperation), stackTraceString);
+			log('end: ' +String.valueOf(currentTriggerOperation), stackTraceString);
 			popAll();
 			logEntries = new List<LogEntry>();
 			decrementLevel = false;
 		} else {
 			executedTriggerOperations.add(newTriggerOperation);
 			currentTriggerOperation = newTriggerOperation;
-			log('start:' +String.valueOf(currentTriggerOperation), stackTraceString);
+			log('start: ' +String.valueOf(currentTriggerOperation), stackTraceString);
 			currentLoggingLevel+=1;
 			decrementLevel = true;
 		}

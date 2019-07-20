@@ -191,14 +191,14 @@ private class LoggerTest {
 	private static void logTrigger_AllVariations_Success() {
 		LoggerConfig.enableLoggingOverride = true;
 		Test.startTest();
-		Logger.logTrigger(null, 'fakeTrace');
+		Logger.logTrigger(null);
 		Logger.log('message');
 		System.assertEquals(0, Logger.executedTriggerOperations.size(),'No operation was added to list');
 		System.assert (Logger.logEntries.size()>0,'At first we got entries');
 		Logger.currentTriggerOperation = System.TriggerOperation.AFTER_UPDATE;
-		Logger.logTrigger(System.TriggerOperation.AFTER_INSERT, 'fakeTrace');
+		Logger.logTrigger(System.TriggerOperation.AFTER_INSERT);
 		Logger.currentTriggerOperation = System.TriggerOperation.AFTER_UPDATE;
-		Logger.logTrigger(System.TriggerOperation.AFTER_UPDATE, 'fakeTrace');
+		Logger.logTrigger(System.TriggerOperation.AFTER_UPDATE);
 		Test.stopTest();
 		System.assertEquals(0, Logger.logEntries.size(), 'LogEntries empty after log Trigger completion');
 	}
