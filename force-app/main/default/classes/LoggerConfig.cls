@@ -28,10 +28,10 @@ public with sharing class LoggerConfig {
 		classNamesToLog = '';
 
 		List<LoggerConfig__mdt> settings = [SELECT IsActive__c, LogsToSave__c, ClassNames__c, AdditionalClassNames__c FROM LoggerConfig__mdt WHERE IsActive__c = true ORDER BY DeveloperName ASC];
-		LoggerConfig__mdt setting = settings[0];
-		if (setting == null) {
+		if (settings.size() == 0) {
 			return;
 		}
+		LoggerConfig__mdt setting = settings[0];
 		enableLogging = true;
 
 		String logsToSave = setting.LogsToSave__c;
