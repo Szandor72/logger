@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#FFFFFF</headerColor>
+        <logo>LightningWorkbenchIcon</logo>
+        <logoVersion>1</logoVersion>
+    </brand>
+    <description>View Debug Entries or monitor a live logging session</description>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <label>Logger</label>
+    <navType>Standard</navType>
+    <tab>DebugEntry__c</tab>
+    <uiType>Lightning</uiType>
+    <utilityBar>Logger_UtilityBar</utilityBar>
+</CustomApplication>

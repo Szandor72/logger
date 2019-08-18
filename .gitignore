@@ -7,3 +7,4 @@ app.app-meta.xml
 uncrustify.cfg
 force-app/main/default/settings/Security.settings-meta.xml
 Handler.cls*
+AppSwitcher*
