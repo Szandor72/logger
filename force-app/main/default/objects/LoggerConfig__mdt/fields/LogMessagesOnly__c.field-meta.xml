@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LogMessagesOnly__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Enables Live View. Also, only one DebugEntry per Logger.log('message') or Logger.logException will be saved, push() and pop() will be ignored.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Enables Live View. Also, only one DebugEntry per Logger.log('message') or Logger.logException will be saved, push() and pop() will be ignored.</inlineHelpText>
+    <label>Log Messages Only / Live View</label>
+    <type>Checkbox</type>
+</CustomField>

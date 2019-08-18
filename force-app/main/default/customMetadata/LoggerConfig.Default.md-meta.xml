@@ -15,7 +15,11 @@
         <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
+        <field>LogMessagesOnly__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
         <field>LogsToSave__c</field>
-        <value xsi:type="xsd:string">UserLogs</value>
+        <value xsi:type="xsd:string">AllLogs</value>
     </values>
 </CustomMetadata>

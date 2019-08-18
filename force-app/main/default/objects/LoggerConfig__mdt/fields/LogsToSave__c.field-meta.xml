@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>LogsToSave__c</fullName>
-    <description>Determines whether all logs, exception logs only or only logs for users with custom permission &#39;enableLogging&#39;</description>
+    <description>Determines whether all logs, exception logs only or only logs for users with custom permission &#39;enableLogging&#39; will be saved.</description>
     <externalId>false</externalId>
     <fieldManageability>SubscriberControlled</fieldManageability>
-    <inlineHelpText>Determines whether all logs, exception logs only or only logs for users with custom permission &#39;enableLogging&#39;</inlineHelpText>
+    <inlineHelpText>Determines whether all logs, exception logs only or only logs for users with custom permission &#39;enableLogging&#39; will be saved.</inlineHelpText>
     <label>Logs to save</label>
     <required>true</required>
     <type>Picklist</type>
