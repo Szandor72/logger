@@ -1,3 +1,15 @@
 .THIS .floatRight {
   float: right !important;
 }
+
+.THIS .slds-tree_container {
+  max-width: 100vw;
+}
+
+.THIS .slds-tree__item {
+  font-family: monospace;
+}
+
+.THIS .slds-tree__item .slds-truncate {
+  white-space: inherit;
+}
