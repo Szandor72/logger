@@ -1,3 +1,11 @@
 .THIS .floatRight {
   float: right !important;
 }
+
+.THIS .tree .slds-tree_container {
+  max-width: inherit;
+}
+
+.THIS .tree .slds-truncate {
+  white-space: inherit;
+}
