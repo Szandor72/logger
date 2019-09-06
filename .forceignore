@@ -9,3 +9,6 @@ Account_Record_Page
 app\app.app
 force-app/main/default/settings/Security.settings-meta.xml
 **profile**
+**/jsconfig.json
+
+**/.eslintrc.json

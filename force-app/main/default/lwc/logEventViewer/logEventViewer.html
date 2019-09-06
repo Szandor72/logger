@@ -1,0 +1,28 @@
+<template>
+  <lightning-card title={title}>
+    <p class="slds-p-around_medium">
+      <!-- Using an if statement -->
+      <template if:true={showLogLines}>
+        <!-- Using a for statement -->
+        <div class="typewriter">
+          <template for:each={logEvents} for:item="log">
+            <span key={log.Trace__c}>{log.startDateTime__c}</span>
+            &nbsp;|&nbsp;
+            <span key={log.Trace__c}>{log.details.className}</span>
+            &nbsp;|&nbsp;
+            <span key={log.Trace__c}>{log.details.methodName}</span>
+            &nbsp;
+            <span key={log.Trace__c}>
+              ({log.details.line}:{log.details.column})</span
+            >
+            <br key={log.Trace__c} />
+            <div class="typewriter-text" key={log.Trace__c}>
+              {log.details.description}
+            </div>
+            <br key={log.Trace__c} />
+          </template>
+        </div>
+      </template>
+    </p>
+  </lightning-card>
+</template>

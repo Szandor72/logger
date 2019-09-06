@@ -4,13 +4,17 @@
         <headerColor>#FFFFFF</headerColor>
         <logo>LightningWorkbenchIcon</logo>
         <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
     </brand>
     <description>View Debug Entries or monitor a live logging session</description>
     <formFactors>Small</formFactors>
     <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>Logger</label>
     <navType>Standard</navType>
-    <tab>DebugEntry__c</tab>
+    <tabs>Logs</tabs>
+    <tabs>DebugEntry__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Logger_UtilityBar</utilityBar>
 </CustomApplication>
