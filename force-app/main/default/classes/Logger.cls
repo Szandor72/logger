@@ -85,6 +85,10 @@ public with sharing class Logger {
 			return;
 		}
 
+		if (newTriggerOperation == null) {
+			return;
+		}
+
 		String stackTraceString = new DmlException().getStackTraceString();
 		stackTraceString = stackTraceString.substringAfter('\n');
 		stackTraceString = stackTraceString.substringBefore('\n');
