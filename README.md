@@ -77,4 +77,4 @@ trigger MocksTrigger on Mock__c (before insert, after insert) {
 
 ## Kudos
 
-[Dan Appleman](https://twitter.com/danappleman) and [Adrian Larsson](https://twitter.com/ApexLarson)
+[Dan Appleman](https://twitter.com/danappleman), [Adrian Larsson](https://twitter.com/ApexLarson), and [Robert Sösemann](https://twitter.com/rsoesemann).
