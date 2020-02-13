@@ -10,6 +10,8 @@ Triggers logged with a pair of `Logger.logTrigger(Trigger.getOperationType)` (se
 
 [![Developer Console](https://i.imgur.com/PRtY1R6.png)](https://i.imgur.com/PRtY1R6.png)
 
+![Live View](https://user-images.githubusercontent.com/16804218/74485806-e66d6000-4ebb-11ea-84d8-2dc86ec26f90.png)
+
 ## Usage Example
 
 ```java
