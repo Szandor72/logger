@@ -7,16 +7,7 @@ import {
   isEmpEnabled
 } from "lightning/empApi";
 
-export default class App extends LightningElement {
-  /**
-   * @track indicates that if this object changes,
-   * the UI should update to reflect those changes.
-   * cannot be accessed from parent,
-   * private reactive
-   */
-  @track
-  title = "Log Lines";
-
+export default class LogEventViewer extends LightningElement {
   @track
   channel = "/event/Log__e";
 
@@ -26,14 +17,27 @@ export default class App extends LightningElement {
   @track
   logEvents = [];
 
-  subscription = {};
+  _subscription = {};
+
+  onClearButtonClick() {
+    this.logEvents = [];
+    this.showLogLines = false;
+  }
+
+  onCopyToClipboardClick() {
+    let inputElement = this.template.querySelector(".copyToClipboard");
+    inputElement.disabled = false;
+    inputElement.value = JSON.stringify(this.logEvents);
+    inputElement.select();
+    document.execCommand("copy");
+    inputElement.disabled = true;
+  }
 
   messageCallback = function(response) {
     let newEvent = response.data.payload;
     this.parseLogEventDetails(newEvent);
     this.logEvents.push(newEvent);
     this.showLogLines = this.logEvents.length > 0 ? true : false;
-    console.log(this.logEvents.length);
   };
 
   parseLogEventDetails(myEvent) {
@@ -43,20 +47,13 @@ export default class App extends LightningElement {
   createSubscription() {
     subscribe(this.channel, -1, this.messageCallback.bind(this)).then(
       response => {
-        console.log(
-          "Successfully subscribed to : ",
-          JSON.stringify(response.channel)
-        );
-        this.subscription = response;
+        this._subscription = response;
       }
     );
   }
 
   cancelSubscription() {
-    unsubscribe(this.subscription, response => {
-      console.log("unsubscribe() response: ", JSON.stringify(response));
-      // Response is true for successful unsubscribe
-    });
+    unsubscribe(this._subscription);
   }
 
   connectedCallback() {

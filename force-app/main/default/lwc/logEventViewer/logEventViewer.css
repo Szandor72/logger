@@ -12,7 +12,6 @@ span {
   display: inline-block;
   overflow: hidden;
   letter-spacing: 2px;
-  animation: typing 4s steps(30, end), blink 0.5s step-end 7;
   white-space: nowrap;
   font-size: 16px;
   font-weight: 700;
@@ -20,21 +19,9 @@ span {
   box-sizing: border-box;
 }
 
-@keyframes typing {
-  from {
-    width: 0%;
-  }
-  to {
-    width: 60%;
-  }
-}
-
-@keyframes blink {
-  from,
-  to {
-    border-color: orange;
-  }
-  50% {
-    border-color: transparent;
-  }
+.copyToClipboard {
+  position: fixed;
+  top: -5rem;
+  height: 1px;
+  width: 10px;
 }

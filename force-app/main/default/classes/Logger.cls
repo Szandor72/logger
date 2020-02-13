@@ -265,7 +265,7 @@ public with sharing class Logger {
 		}
 
 		Integer truncateTo = Integer.ValueOf(entries.size() * 0.5);
-		for (Integer i; i < truncateTo; i++) {
+		for (Integer i = 0; i < truncateTo; i++) {
 			entries.remove(entries.size()-1);
 		}
 
