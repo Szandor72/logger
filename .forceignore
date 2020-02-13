@@ -7,5 +7,9 @@ Custom: Marketing Profile
 Custom: Support Profile
 Account_Record_Page
 app\app.app
+**AppSwitcher**
 force-app/main/default/settings/Security.settings-meta.xml
 **profile**
+**/jsconfig.json
+
+**/.eslintrc.json

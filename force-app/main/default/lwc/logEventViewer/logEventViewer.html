@@ -1,0 +1,40 @@
+<template>
+  <lightning-card title="All Messages" icon="utility:apex">
+    <div slot="actions">
+      <lightning-button
+        label="Clear"
+        name="clear"
+        onclick={onClearButtonClick}
+      ></lightning-button>
+      <lightning-button
+        label="Copy to Clipboard"
+        name="copy"
+        onclick={onCopyToClipboardClick}
+      ></lightning-button>
+    </div>
+    <p class="slds-p-around_medium">
+      <template if:true={showLogLines}>
+        <div class="typewriter">
+          <template for:each={logEvents} for:item="log">
+            <span key={log.Trace__c}>{log.startDateTime__c}</span>
+            &nbsp;|&nbsp;
+            <span key={log.Trace__c}>{log.details.className}</span>
+            &nbsp;|&nbsp;
+            <span key={log.Trace__c}>{log.details.methodName}</span>
+            &nbsp;
+            <span key={log.Trace__c}>
+              ({log.details.line}:{log.details.column})</span
+            >
+            <br key={log.Trace__c} />
+            <div class="typewriter-text" key={log.Trace__c}>
+              {log.details.description}
+            </div>
+            <br key={log.Trace__c} />
+          </template>
+        </div>
+      </template>
+    </p>
+  </lightning-card>
+  <!-- https://salesforce.stackexchange.com/questions/272371/interacting-with-the-browser-clipboard-from-lwc -->
+  <input disabled class="copyToClipboard"></input>
+</template>

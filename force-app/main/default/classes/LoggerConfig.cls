@@ -4,6 +4,7 @@ public with sharing class LoggerConfig {
 	public Boolean saveExceptionLogs {public get; private set;}
 	public Boolean saveAllLogs { public get; private set;}
 	public Boolean saveUserLogs { public get; private set;}
+	public Boolean logMessagesOnly { public get; private set;}
 	public String classNamesToLog {public get; private set;}
 
 
@@ -26,13 +27,22 @@ public with sharing class LoggerConfig {
 		saveExceptionLogs = false;
 		saveUserLogs = false;
 		classNamesToLog = '';
+		logMessagesOnly = false;
 
-		List<LoggerConfig__mdt> settings = [SELECT IsActive__c, LogsToSave__c, ClassNames__c, AdditionalClassNames__c FROM LoggerConfig__mdt WHERE IsActive__c = true ORDER BY DeveloperName ASC];
+		List<LoggerConfig__mdt> settings = [SELECT IsActive__c,
+		                                    LogMessagesOnly__c,
+		                                    LogsToSave__c,
+		                                    ClassNames__c,
+		                                    AdditionalClassNames__c
+		                                    FROM LoggerConfig__mdt
+		                                    WHERE IsActive__c = true
+		                                                        ORDER BY DeveloperName ASC];
 		if (settings.size() == 0) {
 			return;
 		}
 		LoggerConfig__mdt setting = settings[0];
 		enableLogging = true;
+		logMessagesOnly = setting.LogMessagesOnly__c;
 
 		String logsToSave = setting.LogsToSave__c;
 		switch on logsToSave {

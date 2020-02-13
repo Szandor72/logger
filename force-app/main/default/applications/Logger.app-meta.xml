@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#FFFFFF</headerColor>
+        <logo>LightningWorkbenchIcon</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <description>View Debug Entries or monitor a live logging session</description>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>Logger</label>
+    <navType>Standard</navType>
+    <tabs>Logs</tabs>
+    <tabs>DebugEntry__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>Logger_UtilityBar</utilityBar>
+</CustomApplication>

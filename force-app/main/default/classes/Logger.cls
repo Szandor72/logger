@@ -2,6 +2,7 @@ public with sharing class Logger {
 
 	@testvisible private static LoggerConfig config = LoggerConfig.getConfig();
 	@testvisible private static Boolean loggingEnabled = config.enableLogging;
+	@testvisible private static Boolean logMessagesOnly = config.logMessagesOnly;
 
 
 
@@ -61,7 +62,16 @@ public with sharing class Logger {
 		if (logEntries==null) {
 			logEntries = new List<LogEntry>();
 		}
-		logEntries.add(new LogEntry(message));
+
+
+		if (logMessagesOnly) {
+			if(String.isNotBlank(message)) {
+				logEntries.add(new LogEntry(message));
+				popAll();
+			}
+		} else {
+			logEntries.add(new LogEntry(message));
+		}
 	}
 
 	public static void logTrigger(System.TriggerOperation newTriggerOperation) {
@@ -88,8 +98,6 @@ public with sharing class Logger {
 			currentLoggingLevel+=1;
 			decrementLevel = true;
 		}
-
-
 	}
 
 	private static void logTrace(String stackTraceString) {
@@ -226,6 +234,10 @@ public with sharing class Logger {
 
 	@testvisible
 	private static Database.SaveResult sendLog() {
+		if(logMessagesOnly && logEntries.size() == 0) {
+			return null;
+		}
+
 		cpuTimeEnd = Limits.getCpuTime();
 		cpuTimeUsage = cpuTimeEnd - cpuTimeStart;
 		Log__e logEvent = new Log__e();
@@ -236,7 +248,8 @@ public with sharing class Logger {
 		if (currentTriggerOperation != null) {
 			logEvent.TriggerOperation__c = String.valueOf(currentTriggerOperation);
 		}
-
+		//reset log cache
+		logEntries.clear();
 		return EventBus.publish(logEvent);
 	}
 
@@ -252,7 +265,7 @@ public with sharing class Logger {
 		}
 
 		Integer truncateTo = Integer.ValueOf(entries.size() * 0.5);
-		for (Integer i; i < truncateTo; i++) {
+		for (Integer i = 0; i < truncateTo; i++) {
 			entries.remove(entries.size()-1);
 		}
 

@@ -1,42 +1,58 @@
-<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+<aura:component
+  implements="flexipage:availableForRecordHome,force:hasRecordId"
+  access="global"
+  description="Displays Log information in tree view"
+>
+  <aura:attribute
+    name="entryRecord"
+    type="Map"
+    description="Only used to store Log Entries JSON"
+  />
+  <aura:attribute
+    name="debugEntry"
+    type="Map"
+    description="necessary for Dataservice"
+  />
+  <aura:attribute
+    name="entryRecordError"
+    type="String"
+    description="Error messages from data service"
+  />
+  <aura:attribute name="items" type="Map" description="Dummy, remote" />
+  <aura:attribute
+    name="expanded"
+    type="Boolean"
+    access="public"
+    default="true"
+    description="Controlls collapse state of tree"
+  />
 
-	<aura:attribute name="entryRecord" 
-									type="Map" 
-									description="Only used to store Log Entries JSON" />
-	<aura:attribute name="debugEntry" 
-									type="Map"
-									description="necessary for Dataservice" />
-	<aura:attribute name="entryRecordError" 
-									type="String" description="Error messages from data service" />
-	<aura:attribute name="items" 
-									type="Map" 
-									description="Dummy, remote" />
-	<aura:attribute name="expanded" 
-									type="Boolean" 
-									access="public" 
-									default="true"
-									description="Controlls collapse state of tree"/>
-	
+  <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
 
-	<aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+  <force:recordData
+    aura:id="jsonLoader"
+    recordId="{!v.recordId}"
+    targetRecord="{!v.entryRecord}"
+    targetFields="{!v.debugEntry}"
+    fields="['Name','logEntryJSON__c']"
+    targetError="{!v.entryRecordError}"
+    recordUpdated="{!c.onInit}"
+  />
 
-	<force:recordData aura:id="jsonLoader" 
-										recordId="{!v.recordId}" 
-										targetRecord="{!v.entryRecord}" 
-										targetFields="{!v.debugEntry}"
-										 fields="['Name','logEntryJSON__c']" 
-										 targetError="{!v.entryRecordError}" 
-										 recordUpdated="{!c.onInit}" />
-    
-    
-	<div style="background-color: white">
-	<div class="floatRight slds-p-around_small">
-		<a href="" onclick="{!c.expandTree}">{!v.expanded ? 'Expand ' : 'Collapse '} all</a>
-	</div>
-	
-	<div class="slds-p-around_small">
-		<lightning:tree items="{! v.items }" header="Messages expanded by default" />
-	</div>
-	<p>{!v.entryRecordError} </p>
-</div>
+  <div style="background-color: white">
+    <div class="floatRight slds-p-around_small">
+      <a href="" onclick="{!c.expandTree}"
+        >{!v.expanded ? 'Expand ' : 'Collapse '} all</a
+      >
+    </div>
+
+    <div class="slds-p-around_small">
+      <lightning:tree
+        items="{! v.items }"
+        header="Messages expanded by default"
+        class="tree"
+      />
+    </div>
+    <p>{!v.entryRecordError} </p>
+  </div>
 </aura:component>

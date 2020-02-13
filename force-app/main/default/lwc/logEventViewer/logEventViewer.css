@@ -1,0 +1,27 @@
+span {
+  font-family: monospace;
+  white-space: pre;
+}
+
+.description {
+  display: block;
+  font-size: 1.4em;
+}
+
+.typewriter-text {
+  display: inline-block;
+  overflow: hidden;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  font-size: 16px;
+  font-weight: 700;
+  border-right: 4px solid transparent;
+  box-sizing: border-box;
+}
+
+.copyToClipboard {
+  position: fixed;
+  top: -5rem;
+  height: 1px;
+  width: 10px;
+}

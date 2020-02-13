@@ -1,10 +1,28 @@
 {
-    "orgName": "Demo Company",
-    "edition": "Developer",
-    "language": "en-US",
-    "country": "US",
-    "orgPreferences" : {
-        "enabled": ["S1DesktopEnabled"],
-        "disabled":["S1EncryptedStoragePref2"]
+  "country": "US",
+  "edition": "Developer",
+  "language": "en_US",
+  "hasSampleData": true,
+  "release": "Preview",
+  "settings": {
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "chatterSettings": {
+      "enableChatter": true
+    },
+    "languageSettings": {
+      "enableTranslationWorkbench": true
+    },
+    "pathAssistantSettings": {
+      "pathAssistantEnabled": true
+    },
+    "mobileSettings": {
+      "enableS1EncryptedStoragePref2": false
+    },
+    "productSettings": {
+      "enableQuantitySchedule": true,
+      "enableRevenueSchedule": true
     }
+  }
 }
