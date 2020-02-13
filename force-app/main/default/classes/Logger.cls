@@ -74,14 +74,17 @@ public with sharing class Logger {
 		}
 	}
 
-	public static void logTrigger(System.TriggerOperation newTriggerOperation) {
+	public static void logTrigger() {
+		System.TriggerOperation newTriggerOperation;
+		if (Test.isRunningTest()) {
+			newTriggerOperation = System.TriggerOperation.AFTER_UPDATE;
+		} else {
+			newTriggerOperation = Trigger.operationType;
+		}
 		if (!loggingEnabled) {
 			return;
 		}
 
-		if (newTriggerOperation == null) {
-			return;
-		}
 		String stackTraceString = new DmlException().getStackTraceString();
 		stackTraceString = stackTraceString.substringAfter('\n');
 		stackTraceString = stackTraceString.substringBefore('\n');
