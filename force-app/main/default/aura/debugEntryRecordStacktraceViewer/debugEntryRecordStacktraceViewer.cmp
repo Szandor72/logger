@@ -1,6 +1,7 @@
 <aura:component
   implements="flexipage:availableForRecordHome,force:hasRecordId"
   access="global"
+  description="Displays Log information in tree view"
 >
   <aura:attribute
     name="entryRecord"
