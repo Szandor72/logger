@@ -1,5 +1,7 @@
 public with sharing class DebugEntryService {
 
+	@testvisible private static Boolean userHasCustomPermissionOverride = false;
+
 	public static void saveLogs(List<Log__e> logs) {
 		LoggerConfig config = LoggerConfig.getConfig();
 		List<DebugEntry__c> newDebugEntries = new List<DebugEntry__c>();
@@ -35,15 +37,16 @@ public with sharing class DebugEntryService {
 				processDebugEntry = true;
 
 			} else if (config.saveUserLogs) {
-				system.debug('userlog enabled');
 				List<PermissionSetAssignment> assignments = UserWithPermissionSetAssignments.get(log.CreatedById).permissionsetAssignments;
 				for (PermissionSetAssignment assignment : assignments) {
-					system.debug(assignment.PermissionSet.Name);
 					if (assignment.PermissionSet.Name == 'EnableLoggingForUser') {
 						processDebugEntry = true;
 						break;
 					}
 
+				}
+				if (Test.isRunningTest()) {
+					processDebugEntry = userHasCustomPermissionOverride;
 				}
 
 			} else if (!String.isNotBlank(config.classNamesToLog)

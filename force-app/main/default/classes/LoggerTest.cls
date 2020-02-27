@@ -83,7 +83,7 @@ private class LoggerTest {
 	private static void sendLog_Fail_EnableLoggingBeatsSaveAllLogs() {
 		//set internal values, sendLog is a private method that is tested here
 		Logger.currentClassName = 'Class';
-		Logger.logEntries = new List<Logger.LogEntry>{new Logger.LogEntry('test message')};
+		Logger.logEntries = new List<Logger.LogEntry> {new Logger.LogEntry('test message')};
 		Logger.cpuTimeStart = 300;
 		Logger.cpuTimeEnd = 400;
 		Logger.cpuTimeUsage = 100;
@@ -105,7 +105,7 @@ private class LoggerTest {
 		Logger.cpuTimeStart = 300;
 		Logger.cpuTimeEnd = 400;
 		Logger.cpuTimeUsage = 100;
-		Logger.logEntries = new List<Logger.LogEntry>{new Logger.LogEntry('test message')};
+		Logger.logEntries = new List<Logger.LogEntry> {new Logger.LogEntry('test message')};
 		LoggerConfig.enableLoggingOverride = true;
 		LoggerConfig.saveAllLogsOverride = true;
 		Test.startTest();
@@ -138,6 +138,7 @@ private class LoggerTest {
 	private static void sendLog_UserBasedLogging_Success() {
 		LoggerConfig.enableLoggingOverride = true;
 		LoggerConfig.saveUserLogsOverride = true;
+		DebugEntryService.userHasCustomPermissionOverride = true;
 		Test.startTest();
 		Logger.log('test message');
 		Database.SaveResult result = Logger.sendLog();
@@ -191,10 +192,8 @@ private class LoggerTest {
 	private static void logTrigger_AllVariations_Success() {
 		LoggerConfig.enableLoggingOverride = true;
 		Test.startTest();
-		System.assert (Logger.logEntries.size()>0,'At first we got entries');
-		Logger.currentTriggerOperation = System.TriggerOperation.AFTER_UPDATE;
 		Logger.logTrigger();
-		Logger.currentTriggerOperation = System.TriggerOperation.AFTER_UPDATE;
+		System.assert (Logger.logEntries.size()>0,'At first we got entries');
 		Logger.logTrigger();
 		Test.stopTest();
 		System.assertEquals(0, Logger.logEntries.size(), 'LogEntries empty after log Trigger completion');
