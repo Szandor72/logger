@@ -2,13 +2,16 @@
 
 Leverages Platform Events to persist Log information  as 'Debug Entries' and uses `Custom Metadata Records` and `Custom Permissions` to configure what is logged for whom. Automatically detects current class and method name as well as current line and column.
 If setup to trace classes only, will save only information from that class and ignore everything else.
-Triggers logged with a pair of `Logger.logTrigger(Trigger.getOperationType)` (see below) will log each operation type seperately. E.g. AFTER_INSERT and BEFORE_INSERT will get two separate Debug Entries.
+Triggers logged with a pair of `Logger.logTrigger()` (see below) will log each operation type seperately. E.g. AFTER_INSERT and BEFORE_INSERT will get two separate Debug Entries.
+If `Log Messages only` is activated in Logger Custom Metadata Settings, Platform Events will be instantly sent on `Logger.log()`.
 
 ## Screenshots
 
 [![DebugEntry Record View](https://i.imgur.com/00yymeb.png)](https://i.imgur.com/00yymeb.png)
 
 [![Developer Console](https://i.imgur.com/PRtY1R6.png)](https://i.imgur.com/PRtY1R6.png)
+
+![Live View](https://user-images.githubusercontent.com/16804218/74485806-e66d6000-4ebb-11ea-84d8-2dc86ec26f90.png)
 
 ## Usage Example
 
@@ -74,4 +77,4 @@ trigger MocksTrigger on Mock__c (before insert, after insert) {
 
 ## Kudos
 
-[Dan Appleman](https://twitter.com/danappleman) and [Adrian Larsson](https://twitter.com/ApexLarson)
+[Dan Appleman](https://twitter.com/danappleman), [Adrian Larsson](https://twitter.com/ApexLarson), and [Robert Sösemann](https://twitter.com/rsoesemann).
