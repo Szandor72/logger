@@ -1,6 +1,6 @@
 # An attempt at an Apex Logger Service for the Salesforce Lightning Platform
 
-Leverages Platform Events to persist Log information  as 'Debug Entries' and uses `Custom Metadata Records` and `Custom Permissions` to configure what is logged for whom. Automatically detects current class and method name as well as current line and column.
+Leverages Platform Events to persist Log information as 'Debug Entries' and uses `Custom Metadata Records` and `Custom Permissions` to configure what is logged for whom. Automatically detects current class and method name as well as current line and column.
 If setup to trace classes only, will save only information from that class and ignore everything else.
 Triggers logged with a pair of `Logger.logTrigger()` (see below) will log each operation type seperately. E.g. AFTER_INSERT and BEFORE_INSERT will get two separate Debug Entries.
 If `Log Messages only` is activated in Logger Custom Metadata Settings, Platform Events will be instantly sent on `Logger.log()`.
@@ -69,9 +69,9 @@ public with sharing class Handler {
 
 /* Trigger Example */
 trigger MocksTrigger on Mock__c (before insert, after insert) {
-	Logger.logTrigger(Trigger.operationType);
+	Logger.logTrigger();
     MocksService.validate(Trigger.new);
-    Logger.logTrigger(Trigger.operationType);
+    Logger.logTrigger();
 }
 ```
 
