@@ -49,6 +49,11 @@
         <field>DebugEntry__c.startDateTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>DebugEntry__c.transactionUUID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Logger Permissions</label>
     <objectPermissions>
